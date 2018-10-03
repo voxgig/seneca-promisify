@@ -1,6 +1,6 @@
 {
   "name": "seneca-promisify",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Seneca plugin for user and promisify permissions.",
   "main": "promisify.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "lab": "16",
     "prettier": "1",
     "seneca": "github:senecajs/seneca",
+    "seneca-joi": "2",
     "seneca-entity": "2",
     "seneca-plugin-validator": "0"
   }

@@ -20,6 +20,14 @@ module.exports.preload = function preload_promise() {
     if( '' != action.name ) {
       Object.defineProperty(action_wrapper, 'name', {value:action.name})
     }
+
+    if(action.validate) {
+      action_wrapper.validate = action.validate
+    }
+
+    if(action.handle) {
+      action_wrapper.handle = action.handle
+    }
     
     this.add(pattern, action_wrapper)
 
@@ -51,15 +59,19 @@ module.exports.preload = function preload_promise() {
 
 
 function promisify_entity(ent) {
-  if(null == ent) {
+  if(null == ent || ent.__promise__$) {
     return ent
   }
-  
+
+  ent.__promise__$ = true
+  ent.__make__$ = ent.make$
   ent.__load__$ = Util.promisify(ent.load$)
   ent.__save__$ = Util.promisify(ent.save$)
   ent.__list__$ = Util.promisify(ent.list$)
   ent.__remove__$ = Util.promisify(ent.remove$)
+  ent.__close__$ = Util.promisify(ent.close$)
 
+  
   ent.load$ = async function() {
     var outent = await ent.__load__$.apply(ent, arguments)
     return promisify_entity(outent)
@@ -81,6 +93,18 @@ function promisify_entity(ent) {
       outlist[i] = promisify_entity(outlist[i])
     }
     return outlist
+  }
+
+  ent.close$ = async function() {
+    var outent = await ent.__close__$.apply(ent, arguments)
+    return promisify_entity(outent)
+  }
+
+  ent.native$ = Util.promisify(ent.native$)
+
+  ent.make$ = function() {
+    var outent = ent.__make__$.apply(ent, arguments)
+    return promisify_entity(outent)
   }
   
   return ent

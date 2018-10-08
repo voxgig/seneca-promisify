@@ -92,6 +92,27 @@ lab.test('plugin', async () => {
 lab.test('entity', async () => {
   var si = seneca_instance()
 
+  var bar0 = si.entity('bar').data$({a:1})
+  expect(''+bar0).equal('$-/-/bar;id=;{a:1}')
+
+  var bar1 = si.entity('bar',{a:2})
+  expect(''+bar1).equal('$-/-/bar;id=;{a:2}')
+
+  var bar2 = si.entity('bar')  
+  bar2.a = 3
+  expect(''+bar2).equal('$-/-/bar;id=;{a:3}')
+
+  var bar10 = si.make('bar').data$({a:1})
+  expect(''+bar10).equal('$-/-/bar;id=;{a:1}')
+
+  var bar11 = si.make('bar',{a:2})
+  expect(''+bar11).equal('$-/-/bar;id=;{a:2}')
+
+  var bar12 = si.make('bar')
+  bar12.a = 3
+  expect(''+bar12).equal('$-/-/bar;id=;{a:3}')
+
+  
   var foo0 = await si.entity('foo').data$({a:1}).save$()
 
   var foo1 = await si.entity('foo').load$(foo0.id)

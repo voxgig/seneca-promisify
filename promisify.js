@@ -5,9 +5,11 @@
 
 var Util = require('util')
 
-module.exports = promise
+module.exports = promisify
 
-module.exports.preload = function preload_promise() {
+module.exports.preload = function preload_promisify() {
+  
+
   var self = this
   
   self.root.send = function(msg) { return this.act(msg) }
@@ -59,11 +61,13 @@ module.exports.preload = function preload_promise() {
 
 
 function promisify_entity(ent) {
-  if(null == ent || ent.__promise__$) {
+  if(null == ent || ent.__promisify__$) {
     return ent
   }
 
-  ent.__promise__$ = true
+
+  ent.__promisify__$ = true
+  
   ent.__make__$ = ent.make$
   ent.__load__$ = Util.promisify(ent.load$)
   ent.__save__$ = Util.promisify(ent.save$)
@@ -71,7 +75,14 @@ function promisify_entity(ent) {
   ent.__remove__$ = Util.promisify(ent.remove$)
   ent.__close__$ = Util.promisify(ent.close$)
 
-  
+
+
+  ent.make$ = function() {
+    var outent = ent.__make__$.apply(ent, arguments)
+    return promisify_entity(outent)
+  }
+
+
   ent.load$ = async function() {
     var outent = await ent.__load__$.apply(ent, arguments)
     return promisify_entity(outent)
@@ -81,18 +92,18 @@ function promisify_entity(ent) {
     var outent = await ent.__save__$.apply(ent, arguments)
     return promisify_entity(outent)
   }
-
-  ent.remove$ = async function() {
-    var outent = await ent.__remove__$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
-
+  
   ent.list$ = async function() {
     var outlist = await ent.__list__$.apply(ent, arguments)
     for(var i = 0; i < outlist.length; i++ ) {
       outlist[i] = promisify_entity(outlist[i])
     }
     return outlist
+  }
+
+  ent.remove$ = async function() {
+    var outent = await ent.__remove__$.apply(ent, arguments)
+    return promisify_entity(outent)
   }
 
   ent.close$ = async function() {
@@ -102,16 +113,12 @@ function promisify_entity(ent) {
 
   ent.native$ = Util.promisify(ent.native$)
 
-  ent.make$ = function() {
-    var outent = ent.__make__$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
   
   return ent
 }
 
 
-function promise(options) {
+function promisify(options) {
 
 }
 

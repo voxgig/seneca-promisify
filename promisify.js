@@ -3,6 +3,7 @@
 
 // An experimental promise interface for Seneca
 
+
 var Util = require('util')
 
 module.exports = promisify
@@ -36,14 +37,14 @@ module.exports.preload = function preload_promisify() {
     return this
   }
 
-  self.entity = function() {
-    var ent = self.make.apply(self,arguments)
+  self.root.entity = function() {
+    var ent = this.make.apply(this,arguments)
     ent = promisify_entity(ent)
     return ent
   }
 
 
-  self.prepare = function(init) {
+  self.root.prepare = function(init) {
     var init_wrapper = function(done) {
       init.call(this).then(done).catch(done)
     }
@@ -60,41 +61,38 @@ module.exports.preload = function preload_promisify() {
 }
 
 
+// In seneca 4, update seneca-entity to be async/await
 function promisify_entity(ent) {
-  if(null == ent || ent.__promisify__$) {
+  if(null == ent || ent.__promisify$$) {
     return ent
   }
 
-
-  ent.__promisify__$ = true
+  ent.__promisify$$ = true
   
-  ent.__make__$ = ent.make$
-  ent.__load__$ = Util.promisify(ent.load$)
-  ent.__save__$ = Util.promisify(ent.save$)
-  ent.__list__$ = Util.promisify(ent.list$)
-  ent.__remove__$ = Util.promisify(ent.remove$)
-  ent.__close__$ = Util.promisify(ent.close$)
-
-
+  ent.__make$$ = ent.make$
+  ent.__load$$ = Util.promisify(ent.load$)
+  ent.__save$$ = Util.promisify(ent.save$)
+  ent.__list$$ = Util.promisify(ent.list$)
+  ent.__remove$$ = Util.promisify(ent.remove$)
+  ent.__close$$ = Util.promisify(ent.close$)
 
   ent.make$ = function() {
-    var outent = ent.__make__$.apply(ent, arguments)
+    var outent = ent.__make$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
-
   ent.load$ = async function() {
-    var outent = await ent.__load__$.apply(ent, arguments)
+    var outent = await ent.__load$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
   ent.save$ = async function() {
-    var outent = await ent.__save__$.apply(ent, arguments)
+    var outent = await ent.__save$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
   
   ent.list$ = async function() {
-    var outlist = await ent.__list__$.apply(ent, arguments)
+    var outlist = await ent.__list$$.apply(ent, arguments)
     for(var i = 0; i < outlist.length; i++ ) {
       outlist[i] = promisify_entity(outlist[i])
     }
@@ -102,17 +100,16 @@ function promisify_entity(ent) {
   }
 
   ent.remove$ = async function() {
-    var outent = await ent.__remove__$.apply(ent, arguments)
+    var outent = await ent.__remove$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
   ent.close$ = async function() {
-    var outent = await ent.__close__$.apply(ent, arguments)
+    var outent = await ent.__close$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
   ent.native$ = Util.promisify(ent.native$)
-
   
   return ent
 }

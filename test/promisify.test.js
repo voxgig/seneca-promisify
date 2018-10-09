@@ -135,6 +135,18 @@ lab.test('entity', async () => {
 })
 
 
+lab.test('prepare-entity', async () => {
+  var si = seneca_instance()
+      .use(function() {
+        this.prepare(async function () {
+          var foo = await this.entity('foo').data$({a:1}).save$()
+          expect(foo.a).equal(1)
+        })
+      })
+
+  await Util.promisify(si.ready)()
+})
+
 
 function seneca_instance(fin, testmode) {
   return Seneca()

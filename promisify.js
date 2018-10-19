@@ -43,7 +43,6 @@ module.exports.preload = function preload_promisify() {
     return ent
   }
 
-
   self.root.prepare = function(init) {
     var init_wrapper = function(done) {
       init.call(this).then(done).catch(done)
@@ -56,6 +55,24 @@ module.exports.preload = function preload_promisify() {
 
     return this
   }
+
+  
+
+  const __prior$$ = self.root.prior
+  const __priorAsync$$ = Util.promisify(self.root.prior)
+  
+  self.root.prior = async function() {
+    var last_is_func = 1 < arguments.length &&
+        'function' == typeof arguments[arguments.length-1]
+
+    if(last_is_func) {
+      return __prior$$.apply(this, arguments)
+    }
+    else {
+      return await __priorAsync$$.apply(this, arguments)
+    }
+  }
+
   
   return self
 }

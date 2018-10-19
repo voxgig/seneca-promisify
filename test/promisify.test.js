@@ -148,6 +148,52 @@ lab.test('prepare-entity', async () => {
 })
 
 
+lab.test('prior', async () => {
+  var si = seneca_instance()
+
+
+  si.add('trad:0', function(msg, reply) {
+    reply({x:msg.x,y:1,z:msg.z,q:msg.q})
+  })
+
+
+  si.add('trad:0', function(msg, reply) {
+    msg = this.util.clean(msg)
+    msg.z = 1
+    this.prior(msg, reply)
+  })
+
+
+  var out = await si.post('trad:0,x:1')
+  expect(out).equal({x:1,y:1,z:1,q:void 0})
+
+  si.message('trad:0', async function(msg) {
+    msg = this.util.clean(msg)
+    msg.q = 1
+    return await this.prior(msg)
+  })
+
+  var out = await si.post('trad:0,x:1')
+  expect(out).equal({x:1,y:1,z:1,q:1})
+
+
+  var tmp = {}
+  si.add('a:1', function(msg) {
+    tmp.a = msg.a
+  })
+
+  si.add('a:1', function() {
+    this.prior({a:msg.a})
+  })
+
+  si.send('a:1')
+
+  setImmediate(function(){
+    expect(tmp.a).equal(1)
+  })
+})
+
+
 function seneca_instance(fin, testmode) {
   return Seneca()
     .test(fin, testmode)

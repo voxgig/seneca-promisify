@@ -57,7 +57,6 @@ module.exports.preload = function preload_promisify() {
   }
 
   
-
   const __prior$$ = self.root.prior
   const __priorAsync$$ = Util.promisify(self.root.prior)
   

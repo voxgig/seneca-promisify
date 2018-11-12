@@ -182,7 +182,7 @@ lab.test('prior', async () => {
     tmp.a = msg.a
   })
 
-  si.add('a:1', function() {
+  si.add('a:1', function(msg) {
     this.prior({a:msg.a})
   })
 
@@ -191,6 +191,21 @@ lab.test('prior', async () => {
   setImmediate(function(){
     expect(tmp.a).equal(1)
   })
+})
+
+lab.test('ready', async () => {
+  var si = seneca_instance()
+  var tmp = {}
+  
+  si.use(function(opts){
+    this.prepare(async function(){
+      await new Promise((r)=>setTimeout(r,111))
+      tmp.a = 1
+    })
+  })
+
+  await si.ready()
+  expect(tmp.a).equal(1)
 })
 
 

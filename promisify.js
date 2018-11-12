@@ -72,6 +72,22 @@ module.exports.preload = function preload_promisify() {
     }
   }
 
+
+  const __ready$$ = self.root.ready
+  const __readyAsync$$ = Util.promisify(self.root.ready)
+  
+  self.root.ready = async function() {
+    var last_is_func = 0 < arguments.length &&
+        'function' == typeof arguments[arguments.length-1]
+
+    if(last_is_func) {
+      return __ready$$.apply(this, arguments)
+    }
+    else {
+      return await __readyAsync$$.apply(this, arguments)
+    }
+  }
+
   
   return self
 }

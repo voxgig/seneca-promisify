@@ -204,8 +204,9 @@ lab.test('ready', async () => {
     })
   })
 
-  await si.ready()
+  var so = await si.ready()
   expect(tmp.a).equal(1)
+  expect(si === so).true()
 })
 
 

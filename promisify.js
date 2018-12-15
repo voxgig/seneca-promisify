@@ -84,7 +84,8 @@ module.exports.preload = function preload_promisify() {
       return __ready$$.apply(this, arguments)
     }
     else {
-      return await __readyAsync$$.apply(this, arguments)
+      await __readyAsync$$.apply(this, arguments)
+      return this
     }
   }
 

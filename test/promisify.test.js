@@ -15,18 +15,20 @@ const Joi = Optioner.Joi
 
 const Plugin = require('..')
 
-
-lab.test('validate', Util.promisify(function(x,fin){PluginValidator(Plugin, module)(fin)}))
-
+lab.test(
+  'validate',
+  Util.promisify(function(x, fin) {
+    PluginValidator(Plugin, module)(fin)
+  })
+)
 
 lab.test('happy', async () => {
   var counter = 0
 
-  var si = seneca_instance()
-      .message('a:1', async function(msg) {
-        counter++
-        return {x:msg.x}
-      })
+  var si = seneca_instance().message('a:1', async function(msg) {
+    counter++
+    return { x: msg.x }
+  })
 
   // async message (no response)
   si.send('a:1,x:2')
@@ -38,13 +40,12 @@ lab.test('happy', async () => {
   expect(counter).equal(2)
 })
 
-
 lab.test('validate-handle', async () => {
   var counter = 0
 
   async function a1(msg) {
     counter++
-    return {x:msg.x}
+    return { x: msg.x }
   }
 
   a1.validate = {
@@ -53,8 +54,7 @@ lab.test('validate-handle', async () => {
 
   a1.handle = function() {}
 
-  var si = seneca_instance()
-      .message('a:1', a1)
+  var si = seneca_instance().message('a:1', a1)
 
   // async message (no response)
   si.send('a:1,x:2')
@@ -66,64 +66,65 @@ lab.test('validate-handle', async () => {
   expect(counter).equal(2)
 })
 
-
 lab.test('plugin', async () => {
-  var si = seneca_instance()
-      .use(function() {
-        var y = 0
+  var si = seneca_instance().use(function() {
+    var y = 0
 
-        this
-          .message('a:1', async function a1(msg) {
-            return {x:msg.x, y:y}
-          })
-          .prepare(async function () {
-            y = 50
-          })
-          .prepare(async function prep() {
-            y = 100
-          })
+    this.message('a:1', async function a1(msg) {
+      return { x: msg.x, y: y }
+    })
+      .prepare(async function() {
+        y = 50
       })
+      .prepare(async function prep() {
+        y = 100
+      })
+  })
 
   var out = await si.post('a:1,x:2')
-  expect(out).equal({x:2,y:100})
+  expect(out).equal({ x: 2, y: 100 })
 })
-
 
 lab.test('entity', async () => {
   var si = seneca_instance()
 
-  var bar0 = si.entity('bar').data$({a:1})
-  expect(''+bar0).equal('$-/-/bar;id=;{a:1}')
+  var bar0 = si.entity('bar').data$({ a: 1 })
+  expect('' + bar0).equal('$-/-/bar;id=;{a:1}')
 
-  var bar1 = si.entity('bar',{a:2})
-  expect(''+bar1).equal('$-/-/bar;id=;{a:2}')
+  var bar1 = si.entity('bar', { a: 2 })
+  expect('' + bar1).equal('$-/-/bar;id=;{a:2}')
 
-  var bar2 = si.entity('bar')  
+  var bar2 = si.entity('bar')
   bar2.a = 3
-  expect(''+bar2).equal('$-/-/bar;id=;{a:3}')
+  expect('' + bar2).equal('$-/-/bar;id=;{a:3}')
 
-  var bar10 = si.make('bar').data$({a:1})
-  expect(''+bar10).equal('$-/-/bar;id=;{a:1}')
+  var bar10 = si.make('bar').data$({ a: 1 })
+  expect('' + bar10).equal('$-/-/bar;id=;{a:1}')
 
-  var bar11 = si.make('bar',{a:2})
-  expect(''+bar11).equal('$-/-/bar;id=;{a:2}')
+  var bar11 = si.make('bar', { a: 2 })
+  expect('' + bar11).equal('$-/-/bar;id=;{a:2}')
 
   var bar12 = si.make('bar')
   bar12.a = 3
-  expect(''+bar12).equal('$-/-/bar;id=;{a:3}')
+  expect('' + bar12).equal('$-/-/bar;id=;{a:3}')
 
-  
-  var foo0 = await si.entity('foo').data$({a:1}).save$()
+  var foo0 = await si
+    .entity('foo')
+    .data$({ a: 1 })
+    .save$()
 
   var foo1 = await si.entity('foo').load$(foo0.id)
-  expect(''+foo0).equal(''+foo1)
+  expect('' + foo0).equal('' + foo1)
 
-  var foo2 = await si.entity('foo').data$({a:1}).save$()
-  var list = await si.entity('foo').list$({a:1})
+  var foo2 = await si
+    .entity('foo')
+    .data$({ a: 1 })
+    .save$()
+  var list = await si.entity('foo').list$({ a: 1 })
   expect(list.length).equal(2)
 
   await foo0.remove$()
-  list = await si.entity('foo').list$({a:1})
+  list = await si.entity('foo').list$({ a: 1 })
   expect(list.length).equal(1)
 
   var foo3 = list[0].clone$()
@@ -134,28 +135,25 @@ lab.test('entity', async () => {
   expect(foo4.a).equal(2)
 })
 
-
 lab.test('prepare-entity', async () => {
-  var si = seneca_instance()
-      .use(function() {
-        this.prepare(async function () {
-          var foo = await this.entity('foo').data$({a:1}).save$()
-          expect(foo.a).equal(1)
-        })
-      })
+  var si = seneca_instance().use(function() {
+    this.prepare(async function() {
+      var foo = await this.entity('foo')
+        .data$({ a: 1 })
+        .save$()
+      expect(foo.a).equal(1)
+    })
+  })
 
   await Util.promisify(si.ready)()
 })
 
-
 lab.test('prior', async () => {
   var si = seneca_instance()
 
-
   si.add('trad:0', function(msg, reply) {
-    reply({x:msg.x,y:1,z:msg.z,q:msg.q})
+    reply({ x: msg.x, y: 1, z: msg.z, q: msg.q })
   })
-
 
   si.add('trad:0', function(msg, reply) {
     msg = this.util.clean(msg)
@@ -163,9 +161,8 @@ lab.test('prior', async () => {
     this.prior(msg, reply)
   })
 
-
   var out = await si.post('trad:0,x:1')
-  expect(out).equal({x:1,y:1,z:1,q:void 0})
+  expect(out).equal({ x: 1, y: 1, z: 1, q: void 0 })
 
   si.message('trad:0', async function(msg) {
     msg = this.util.clean(msg)
@@ -174,8 +171,7 @@ lab.test('prior', async () => {
   })
 
   var out = await si.post('trad:0,x:1')
-  expect(out).equal({x:1,y:1,z:1,q:1})
-
+  expect(out).equal({ x: 1, y: 1, z: 1, q: 1 })
 
   var tmp = {}
   si.add('a:1', function(msg) {
@@ -183,12 +179,12 @@ lab.test('prior', async () => {
   })
 
   si.add('a:1', function(msg) {
-    this.prior({a:msg.a})
+    this.prior({ a: msg.a })
   })
 
   si.send('a:1')
 
-  setImmediate(function(){
+  setImmediate(function() {
     expect(tmp.a).equal(1)
   })
 })
@@ -196,10 +192,10 @@ lab.test('prior', async () => {
 lab.test('ready', async () => {
   var si = seneca_instance()
   var tmp = {}
-  
-  si.use(function(opts){
-    this.prepare(async function(){
-      await new Promise((r)=>setTimeout(r,111))
+
+  si.use(function(opts) {
+    this.prepare(async function() {
+      await new Promise(r => setTimeout(r, 111))
       tmp.a = 1
     })
   })
@@ -208,7 +204,6 @@ lab.test('ready', async () => {
   expect(tmp.a).equal(1)
   expect(si === so).true()
 })
-
 
 function seneca_instance(fin, testmode) {
   return Seneca()

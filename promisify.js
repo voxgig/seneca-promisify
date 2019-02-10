@@ -3,34 +3,36 @@
 
 // An experimental promise interface for Seneca
 
-
 var Util = require('util')
 
 module.exports = promisify
 
 module.exports.preload = function preload_promisify() {
-  
-
   var self = this
-  
-  self.root.send = function(msg) { return this.act(msg) }
+
+  self.root.send = function(msg) {
+    return this.act(msg)
+  }
   self.root.post = Util.promisify(this.act)
 
   self.root.message = function(pattern, action) {
     var action_wrapper = function(msg, reply, meta) {
-      action.call(this, msg, meta).then(reply).catch(reply)
+      action
+        .call(this, msg, meta)
+        .then(reply)
+        .catch(reply)
     }
-    if( '' != action.name ) {
-      Object.defineProperty(action_wrapper, 'name', {value:action.name})
+    if ('' != action.name) {
+      Object.defineProperty(action_wrapper, 'name', { value: action.name })
     }
 
-    for(var p in action) {
+    for (var p in action) {
       action_wrapper[p] = action[p]
     }
 
     // NOTE: also set properties defined after call to seneca.message
-    setImmediate(function(){
-      for(var p in action) {
+    setImmediate(function() {
+      for (var p in action) {
         action_wrapper[p] = action[p]
       }
     })
@@ -41,70 +43,69 @@ module.exports.preload = function preload_promisify() {
   }
 
   self.root.entity = function() {
-    var ent = this.make.apply(this,arguments)
+    var ent = this.make.apply(this, arguments)
     ent = promisify_entity(ent)
     return ent
   }
 
   self.root.prepare = function(init) {
     var init_wrapper = function(done) {
-      init.call(this).then(done).catch(done)
+      init
+        .call(this)
+        .then(done)
+        .catch(done)
     }
-    if( '' != init.name ) {
-      Object.defineProperty(init_wrapper, 'name', {value:init.name})
+    if ('' != init.name) {
+      Object.defineProperty(init_wrapper, 'name', { value: init.name })
     }
-    
+
     this.init(init_wrapper)
 
     return this
   }
 
-  
   const __prior$$ = self.root.prior
   const __priorAsync$$ = Util.promisify(self.root.prior)
-  
-  self.root.prior = async function() {
-    var last_is_func = 1 < arguments.length &&
-        'function' == typeof arguments[arguments.length-1]
 
-    if(last_is_func) {
+  self.root.prior = async function() {
+    var last_is_func =
+      1 < arguments.length &&
+      'function' == typeof arguments[arguments.length - 1]
+
+    if (last_is_func) {
       return __prior$$.apply(this, arguments)
-    }
-    else {
+    } else {
       return await __priorAsync$$.apply(this, arguments)
     }
   }
 
-
   const __ready$$ = self.root.ready
   const __readyAsync$$ = Util.promisify(self.root.ready)
-  
-  self.root.ready = async function() {
-    var last_is_func = 0 < arguments.length &&
-        'function' == typeof arguments[arguments.length-1]
 
-    if(last_is_func) {
+  self.root.ready = async function() {
+    var last_is_func =
+      0 < arguments.length &&
+      'function' == typeof arguments[arguments.length - 1]
+
+    if (last_is_func) {
       return __ready$$.apply(this, arguments)
-    }
-    else {
+    } else {
       await __readyAsync$$.apply(this, arguments)
       return this
     }
   }
 
-  
   return self
 }
 
-
 // In seneca 4, update seneca-entity to be async/await
 function promisify_entity(ent) {
-  if(null == ent || ent.__promisify$$) {
+  if (null == ent || ent.__promisify$$) {
     return ent
   }
 
   ent.__promisify$$ = true
-  
+
   ent.__make$$ = ent.make$
   ent.__load$$ = Util.promisify(ent.load$)
   ent.__save$$ = Util.promisify(ent.save$)
@@ -126,10 +127,10 @@ function promisify_entity(ent) {
     var outent = await ent.__save$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
-  
+
   ent.list$ = async function() {
     var outlist = await ent.__list$$.apply(ent, arguments)
-    for(var i = 0; i < outlist.length; i++ ) {
+    for (var i = 0; i < outlist.length; i++) {
       outlist[i] = promisify_entity(outlist[i])
     }
     return outlist
@@ -146,13 +147,8 @@ function promisify_entity(ent) {
   }
 
   ent.native$ = Util.promisify(ent.native$)
-  
+
   return ent
 }
 
-
-function promisify(options) {
-
-}
-
-
+function promisify(options) {}

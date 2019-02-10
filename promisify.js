@@ -24,14 +24,17 @@ module.exports.preload = function preload_promisify() {
       Object.defineProperty(action_wrapper, 'name', {value:action.name})
     }
 
-    if(action.validate) {
-      action_wrapper.validate = action.validate
+    for(var p in action) {
+      action_wrapper[p] = action[p]
     }
 
-    if(action.handle) {
-      action_wrapper.handle = action.handle
-    }
-    
+    // NOTE: also set properties defined after call to seneca.message
+    setImmediate(function(){
+      for(var p in action) {
+        action_wrapper[p] = action[p]
+      }
+    })
+
     this.add(pattern, action_wrapper)
 
     return this

@@ -8,8 +8,8 @@
     "prettier": "prettier --write --no-semi --single-quote *.js lib/*.js test/*.js",
     "coveralls": "lab -s -P test -r lcov | coveralls",
     "clean": "rm -rf node_modules yarn.lock package-lock.json",
-    "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"`; echo TAG: v$REPO_VERSION; git commit -a -m v$REPO_VERSION; git push; git tag v$REPO_VERSION; git push --tags;",
-    "repo-publish": "npm run repo-tag; npm publish"
+    "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
+    "repo-publish": "npm run prettier && npm run test &7 npm run repo-tag && npm publish"
   },
   "repository": {
     "type": "git",
@@ -31,17 +31,17 @@
     "node": ">=8"
   },
   "dependencies": {
-    "optioner": "3.0"
+    "optioner": "^3.0.0"
   },
   "devDependencies": {
-    "jsonic": "0.3.1",
-    "code": "5",
-    "coveralls": "3",
-    "lab": "16",
-    "prettier": "1",
-    "seneca": "github:senecajs/seneca",
-    "seneca-joi": "2",
-    "seneca-entity": "2",
-    "seneca-plugin-validator": "0"
+    "code": "^5.2.4",
+    "coveralls": "^3.0.2",
+    "jsonic": "^0.3.1",
+    "lab": "^18.0.1",
+    "prettier": "^1.16.4",
+    "seneca": "^3.8.0",
+    "seneca-entity": "^2.5.1",
+    "seneca-joi": "^3.0.0",
+    "seneca-plugin-validator": "0.0.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "seneca-promisify",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Seneca plugin for user and promisify permissions.",
   "main": "promisify.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "node": ">=8"
   },
   "dependencies": {
-    "optioner": "^3.0.0"
+    "optioner": "^4.0.0"
   },
   "devDependencies": {
     "code": "^5.2.4",
@@ -40,7 +40,7 @@
     "lab": "^18.0.1",
     "prettier": "^1.16.4",
     "seneca": "^3.8.0",
-    "seneca-entity": "^2.5.1",
+    "seneca-entity": "^3.3.0",
     "seneca-joi": "^3.0.0",
     "seneca-plugin-validator": "0.0.1"
   }

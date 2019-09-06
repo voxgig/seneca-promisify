@@ -3,8 +3,8 @@
 
 const Util = require('util')
 
-const Lab = require('lab')
-const Code = require('code')
+const Lab = require('@hapi/lab')
+const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const expect = Code.expect
 
@@ -17,9 +17,7 @@ const Plugin = require('..')
 
 lab.test(
   'validate',
-  Util.promisify(function(x, fin) {
-    PluginValidator(Plugin, module)(fin)
-  })
+  PluginValidator(Plugin, module) //(fin)
 )
 
 lab.test('happy', async () => {
@@ -145,7 +143,8 @@ lab.test('prepare-entity', async () => {
     })
   })
 
-  await Util.promisify(si.ready)()
+  //await Util.promisify(si.ready)()
+  await si.ready()
 })
 
 lab.test('prior', async () => {

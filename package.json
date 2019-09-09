@@ -1,6 +1,6 @@
 {
   "name": "seneca-promisify",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Seneca plugin for user and promisify permissions.",
   "main": "promisify.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "coveralls": "lab -s -P test -r lcov | coveralls",
     "clean": "rm -rf node_modules yarn.lock package-lock.json",
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
-    "repo-publish": "npm run prettier && npm run test && npm run repo-tag && npm publish"
+    "repo-publish": "npm run prettier && npm run test && npm run repo-tag && npm publish --access public --registry=http://registry.npmjs.org"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
     "jsonic": "^0.3.1",
     "prettier": "^1.18.2",
     "seneca": "plugin",
-    "seneca-entity": "^5.0.0",
+    "seneca-entity": "^5.1.2",
     "seneca-joi": "^4.1.0",
     "seneca-plugin-validator": "0.3.0"
   }

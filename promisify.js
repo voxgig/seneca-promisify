@@ -11,32 +11,36 @@ module.exports.preload = function preload_promisify() {
   var self = this
 
   self.root.send = function(msg) {
-    return this.act(msg)
+    this.act(msg)
+    return this
   }
   self.root.post = Util.promisify(this.act)
 
   self.root.message = function(pattern, action) {
-    var action_wrapper = function(msg, reply, meta) {
+    var action_wrapper = null == action ? null : function(msg, reply, meta) {
       action
         .call(this, msg, meta)
         .then(reply)
         .catch(reply)
     }
-    if ('' != action.name) {
-      Object.defineProperty(action_wrapper, 'name', { value: action.name })
-    }
 
-    for (var p in action) {
-      action_wrapper[p] = action[p]
-    }
+    if( null != action && null != action_wrapper) {
+      if('' != action.name) {
+        Object.defineProperty(action_wrapper, 'name', { value: action.name })
+      }
 
-    // NOTE: also set properties defined after call to seneca.message
-    setImmediate(function() {
       for (var p in action) {
         action_wrapper[p] = action[p]
       }
-    })
 
+      // NOTE: also set properties defined after call to seneca.message
+      setImmediate(function() {
+        for (var p in action) {
+          action_wrapper[p] = action[p]
+        }
+      })      
+    }
+    
     this.add(pattern, action_wrapper)
 
     return this

@@ -10,6 +10,22 @@
 ## Quick Example
 
 ```
+const Seneca = require('seneca')
+
+var seneca = Seneca()
+
+// Callback version: seneca.add(msg, action)
+// Define a message patter and action
+seneca.message('a:1', async function(msg) {
+  return {foo:1} // reply by just returning
+})
+
+// Callback version: seneca.act(msg, callback)
+// Send a synchronous message action and wait for a reply
+var reply = await seneca.post('a:1')
+
+
+
 ```
 
 

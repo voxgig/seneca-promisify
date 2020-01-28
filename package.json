@@ -4,10 +4,11 @@
   "description": "Seneca plugin for user and promisify permissions.",
   "main": "promisify.js",
   "scripts": {
-    "test": "lab -P test -t 80 -I URL,URLSearchParams",
+    "test": "lab -v -P test -t 90 -r console -o stdout -r html -o test/coverage.html",
     "prettier": "prettier --write --no-semi --single-quote *.js lib/*.js test/*.js",
     "coveralls": "lab -s -P test -r lcov | coveralls",
-    "clean": "rm -rf node_modules yarn.lock package-lock.json",
+    "clean": "rm -rf node_modules package-lock.json yarn.lock",
+    "reset": "npm run clean && npm i && npm test",
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
     "repo-publish": "npm run prettier && npm run test && npm run repo-tag && npm publish --access public --registry=http://registry.npmjs.org"
   },
@@ -31,17 +32,17 @@
     "node": ">=8"
   },
   "dependencies": {
-    "optioner": "^4.1.2"
+    "optioner": "^5.0.0"
   },
   "devDependencies": {
-    "@hapi/code": "^6.0.0",
-    "@hapi/lab": "^20.2.2",
-    "coveralls": "^3.0.6",
+    "@hapi/code": "^8.0.1",
+    "@hapi/lab": "^22.0.3",
+    "coveralls": "^3.0.9",
     "jsonic": "^0.3.1",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "seneca": "plugin",
-    "seneca-entity": "^5.1.2",
-    "seneca-joi": "^4.1.0",
-    "seneca-plugin-validator": "0.3.0"
+    "seneca-entity": "^6.0.0",
+    "seneca-joi": "^7.0.0",
+    "seneca-plugin-validator": "0.5.0"
   }
 }

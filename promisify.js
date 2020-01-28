@@ -17,15 +17,18 @@ module.exports.preload = function preload_promisify() {
   self.root.post = Util.promisify(this.act)
 
   self.root.message = function(pattern, action) {
-    var action_wrapper = null == action ? null : function(msg, reply, meta) {
-      action
-        .call(this, msg, meta)
-        .then(reply)
-        .catch(reply)
-    }
+    var action_wrapper =
+      null == action
+        ? null
+        : function(msg, reply, meta) {
+            action
+              .call(this, msg, meta)
+              .then(reply)
+              .catch(reply)
+          }
 
-    if( null != action && null != action_wrapper) {
-      if('' != action.name) {
+    if (null != action && null != action_wrapper) {
+      if ('' != action.name) {
         Object.defineProperty(action_wrapper, 'name', { value: action.name })
       }
 
@@ -38,9 +41,9 @@ module.exports.preload = function preload_promisify() {
         for (var p in action) {
           action_wrapper[p] = action[p]
         }
-      })      
+      })
     }
-    
+
     this.add(pattern, action_wrapper)
 
     return this

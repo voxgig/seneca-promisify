@@ -38,33 +38,28 @@ lab.test('happy', async () => {
   expect(counter).equal(2)
 })
 
-
 lab.test('no-action', async () => {
-  var tmp = {a1:0,a1x1:0}
+  var tmp = { a1: 0, a1x1: 0 }
 
   var si = seneca_instance().message('a:1')
 
-  si
-    .sub('a:1',(m)=>{
-      tmp.a1++
-    })
-    .sub('a:1,x:1',(m)=>{
-      tmp.a1x1++
-    })
+  si.sub('a:1', m => {
+    tmp.a1++
+  }).sub('a:1,x:1', m => {
+    tmp.a1x1++
+  })
 
   // async message (no response)
   si.act('a:1')
   await si.ready()
-  expect(tmp).equal({a1: 1, a1x1: 0 })
+  expect(tmp).equal({ a1: 1, a1x1: 0 })
 
-  return;
-  
+  return
+
   si.send('a:1,x:1')
   await si.ready()
-  expect(tmp).equal({a1: 1, a1x1: 1 })
-
+  expect(tmp).equal({ a1: 1, a1x1: 1 })
 })
-
 
 lab.test('close', async () => {
   var si = seneca_instance()
@@ -73,7 +68,6 @@ lab.test('close', async () => {
   await si.close()
   expect(si.flags.closed).true()
 })
-
 
 lab.test('validate-handle', async () => {
   var counter = 0

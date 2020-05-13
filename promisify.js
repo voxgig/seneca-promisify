@@ -10,21 +10,18 @@ module.exports = promisify
 module.exports.preload = function preload_promisify() {
   var self = this
 
-  self.root.send = function(msg) {
+  self.root.send = function (msg) {
     this.act(msg)
     return this
   }
   self.root.post = Util.promisify(this.act)
 
-  self.root.message = function(pattern, action) {
+  self.root.message = function (pattern, action) {
     var action_wrapper =
       null == action
         ? null
-        : function(msg, reply, meta) {
-            action
-              .call(this, msg, meta)
-              .then(reply)
-              .catch(reply)
+        : function (msg, reply, meta) {
+            action.call(this, msg, meta).then(reply).catch(reply)
           }
 
     if (null != action && null != action_wrapper) {
@@ -37,7 +34,7 @@ module.exports.preload = function preload_promisify() {
       }
 
       // NOTE: also set properties defined after call to seneca.message
-      setImmediate(function() {
+      setImmediate(function () {
         for (var p in action) {
           action_wrapper[p] = action[p]
         }
@@ -49,18 +46,15 @@ module.exports.preload = function preload_promisify() {
     return this
   }
 
-  self.root.entity = function() {
+  self.root.entity = function () {
     var ent = this.make.apply(this, arguments)
     ent = promisify_entity(ent)
     return ent
   }
 
-  self.root.prepare = function(init) {
-    var init_wrapper = function(done) {
-      init
-        .call(this)
-        .then(done)
-        .catch(done)
+  self.root.prepare = function (init) {
+    var init_wrapper = function (done) {
+      init.call(this).then(done).catch(done)
     }
     if ('' != init.name) {
       Object.defineProperty(init_wrapper, 'name', { value: init.name })
@@ -74,7 +68,7 @@ module.exports.preload = function preload_promisify() {
   const __prior$$ = self.root.prior
   const __priorAsync$$ = Util.promisify(self.root.prior)
 
-  self.root.prior = async function() {
+  self.root.prior = async function () {
     var last_is_func =
       1 < arguments.length &&
       'function' == typeof arguments[arguments.length - 1]
@@ -89,7 +83,7 @@ module.exports.preload = function preload_promisify() {
   const __ready$$ = self.root.ready
   const __readyAsync$$ = Util.promisify(self.root.ready)
 
-  self.root.ready = async function() {
+  self.root.ready = async function () {
     var last_is_func =
       0 < arguments.length &&
       'function' == typeof arguments[arguments.length - 1]
@@ -102,7 +96,7 @@ module.exports.preload = function preload_promisify() {
     }
   }
 
-  return self
+  //return self
 }
 
 // In seneca 4, update seneca-entity to be async/await
@@ -120,22 +114,22 @@ function promisify_entity(ent) {
   ent.__remove$$ = Util.promisify(ent.remove$)
   ent.__close$$ = Util.promisify(ent.close$)
 
-  ent.make$ = function() {
+  ent.make$ = function () {
     var outent = ent.__make$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
-  ent.load$ = async function() {
+  ent.load$ = async function () {
     var outent = await ent.__load$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
-  ent.save$ = async function() {
+  ent.save$ = async function () {
     var outent = await ent.__save$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
-  ent.list$ = async function() {
+  ent.list$ = async function () {
     var outlist = await ent.__list$$.apply(ent, arguments)
     for (var i = 0; i < outlist.length; i++) {
       outlist[i] = promisify_entity(outlist[i])
@@ -143,12 +137,12 @@ function promisify_entity(ent) {
     return outlist
   }
 
-  ent.remove$ = async function() {
+  ent.remove$ = async function () {
     var outent = await ent.__remove$$.apply(ent, arguments)
     return promisify_entity(outent)
   }
 
-  ent.close$ = async function() {
+  ent.close$ = async function () {
     var outent = await ent.__close$$.apply(ent, arguments)
     return promisify_entity(outent)
   }

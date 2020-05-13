@@ -23,7 +23,7 @@ lab.test(
 lab.test('happy', async () => {
   var counter = 0
 
-  var si = seneca_instance().message('a:1', async function(msg) {
+  var si = seneca_instance().message('a:1', async function (msg) {
     counter++
     return { x: msg.x }
   })
@@ -43,9 +43,9 @@ lab.test('no-action', async () => {
 
   var si = seneca_instance().message('a:1')
 
-  si.sub('a:1', m => {
+  si.sub('a:1', (m) => {
     tmp.a1++
-  }).sub('a:1,x:1', m => {
+  }).sub('a:1,x:1', (m) => {
     tmp.a1x1++
   })
 
@@ -78,10 +78,10 @@ lab.test('validate-handle', async () => {
   }
 
   a1.validate = {
-    x: Joi.number()
+    x: Joi.number(),
   }
 
-  a1.handle = function() {}
+  a1.handle = function () {}
 
   var si = seneca_instance().message('a:1', a1)
 
@@ -96,13 +96,13 @@ lab.test('validate-handle', async () => {
 })
 
 lab.test('plugin', async () => {
-  var si = seneca_instance().use(function() {
+  var si = seneca_instance().use(function () {
     var y = 0
 
     this.message('a:1', async function a1(msg) {
       return { x: msg.x, y: y }
     })
-      .prepare(async function() {
+      .prepare(async function () {
         y = 50
       })
       .prepare(async function prep() {
@@ -137,18 +137,12 @@ lab.test('entity', async () => {
   bar12.a = 3
   expect('' + bar12).equal('$-/-/bar;id=;{a:3}')
 
-  var foo0 = await si
-    .entity('foo')
-    .data$({ a: 1 })
-    .save$()
+  var foo0 = await si.entity('foo').data$({ a: 1 }).save$()
 
   var foo1 = await si.entity('foo').load$(foo0.id)
   expect('' + foo0).equal('' + foo1)
 
-  var foo2 = await si
-    .entity('foo')
-    .data$({ a: 1 })
-    .save$()
+  var foo2 = await si.entity('foo').data$({ a: 1 }).save$()
   var list = await si.entity('foo').list$({ a: 1 })
   expect(list.length).equal(2)
 
@@ -165,11 +159,9 @@ lab.test('entity', async () => {
 })
 
 lab.test('prepare-entity', async () => {
-  var si = seneca_instance().use(function() {
-    this.prepare(async function() {
-      var foo = await this.entity('foo')
-        .data$({ a: 1 })
-        .save$()
+  var si = seneca_instance().use(function () {
+    this.prepare(async function () {
+      var foo = await this.entity('foo').data$({ a: 1 }).save$()
       expect(foo.a).equal(1)
     })
   })
@@ -181,11 +173,11 @@ lab.test('prepare-entity', async () => {
 lab.test('prior', async () => {
   var si = seneca_instance()
 
-  si.add('trad:0', function(msg, reply) {
+  si.add('trad:0', function (msg, reply) {
     reply({ x: msg.x, y: 1, z: msg.z, q: msg.q })
   })
 
-  si.add('trad:0', function(msg, reply) {
+  si.add('trad:0', function (msg, reply) {
     msg = this.util.clean(msg)
     msg.z = 1
     this.prior(msg, reply)
@@ -194,7 +186,7 @@ lab.test('prior', async () => {
   var out = await si.post('trad:0,x:1')
   expect(out).equal({ x: 1, y: 1, z: 1, q: void 0 })
 
-  si.message('trad:0', async function(msg) {
+  si.message('trad:0', async function (msg) {
     msg = this.util.clean(msg)
     msg.q = 1
     return await this.prior(msg)
@@ -204,17 +196,17 @@ lab.test('prior', async () => {
   expect(out).equal({ x: 1, y: 1, z: 1, q: 1 })
 
   var tmp = {}
-  si.add('a:1', function(msg) {
+  si.add('a:1', function (msg) {
     tmp.a = msg.a
   })
 
-  si.add('a:1', function(msg) {
+  si.add('a:1', function (msg) {
     this.prior({ a: msg.a })
   })
 
   si.send('a:1')
 
-  setImmediate(function() {
+  setImmediate(function () {
     expect(tmp.a).equal(1)
   })
 })
@@ -223,9 +215,9 @@ lab.test('ready', async () => {
   var si = seneca_instance()
   var tmp = {}
 
-  si.use(function(opts) {
-    this.prepare(async function() {
-      await new Promise(r => setTimeout(r, 111))
+  si.use(function (opts) {
+    this.prepare(async function () {
+      await new Promise((r) => setTimeout(r, 111))
       tmp.a = 1
     })
   })

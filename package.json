@@ -30,7 +30,7 @@
     "lib/errors.js"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "dependencies": {
     "optioner": "^5.0.1"
@@ -42,7 +42,7 @@
     "jsonic": "^0.3.1",
     "prettier": "^2.0.5",
     "seneca": "plugin",
-    "seneca-entity": "^8.0.0",
+    "seneca-entity": "^8.1.0",
     "seneca-joi": "^7.0.2",
     "seneca-plugin-validator": "0.6.1"
   }

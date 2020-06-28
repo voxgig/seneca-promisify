@@ -50,13 +50,15 @@ module.exports.preload = function preload_promisify(plugin) {
     return this
   }
 
-  /*
-  self.root.entity = function () {
-    var ent = this.make.apply(this, arguments)
-    ent = promisify_entity(ent,options)
-    return ent
+  
+  if(null == self.root.entity) { 
+    self.root.entity = function () {
+      var ent = this.make.apply(this, arguments)
+      ent = promisify_entity(ent,options)
+      return ent
+    }
   }
-  */
+  
   
   self.root.prepare = function (init) {
     var init_wrapper = function (done) {
@@ -103,8 +105,6 @@ module.exports.preload = function preload_promisify(plugin) {
   }
 
   self.root.__promisify$$ = true
-
-  return self
 }
 
 // In seneca 4, update seneca-entity to be async/await

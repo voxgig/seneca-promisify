@@ -7,9 +7,13 @@ var Util = require('util')
 
 module.exports = promisify
 
-module.exports.preload = function preload_promisify() {
+module.exports.preload = function preload_promisify(plugin) {
   var self = this
 
+  var options = plugin.options
+
+
+  
   self.root.send = function (msg) {
     this.act(msg)
     return this
@@ -46,12 +50,14 @@ module.exports.preload = function preload_promisify() {
     return this
   }
 
+  /*
   self.root.entity = function () {
     var ent = this.make.apply(this, arguments)
-    ent = promisify_entity(ent)
+    ent = promisify_entity(ent,options)
     return ent
   }
-
+  */
+  
   self.root.prepare = function (init) {
     var init_wrapper = function (done) {
       init.call(this).then(done).catch(done)
@@ -96,12 +102,17 @@ module.exports.preload = function preload_promisify() {
     }
   }
 
-  //return self
+  self.root.__promisify$$ = true
+
+  return self
 }
 
 // In seneca 4, update seneca-entity to be async/await
-function promisify_entity(ent) {
-  if (null == ent || ent.__promisify$$) {
+function promisify_entity(ent,options) {
+  if (null == ent ||
+      ent.__promisify$$ ||
+      (options && false === options.ent))
+  {
     return ent
   }
 

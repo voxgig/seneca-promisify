@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 voxgig and other contributors, MIT License */
+/* Copyright (c) 2018-2020 voxgig and other contributors, MIT License */
 'use strict'
 
 // An experimental promise interface for Seneca
@@ -12,8 +12,6 @@ module.exports.preload = function preload_promisify(plugin) {
 
   var options = plugin.options
 
-
-  
   self.root.send = function (msg) {
     this.act(msg)
     return this
@@ -50,16 +48,14 @@ module.exports.preload = function preload_promisify(plugin) {
     return this
   }
 
-  
-  if(null == self.root.entity) { 
+  if (null == self.root.entity) {
     self.root.entity = function () {
       var ent = this.make.apply(this, arguments)
-      ent = promisify_entity(ent,options)
+      ent = promisify_entity(ent, options)
       return ent
     }
   }
-  
-  
+
   self.root.prepare = function (init) {
     var init_wrapper = function (done) {
       init.call(this).then(done).catch(done)
@@ -108,11 +104,8 @@ module.exports.preload = function preload_promisify(plugin) {
 }
 
 // In seneca 4, update seneca-entity to be async/await
-function promisify_entity(ent,options) {
-  if (null == ent ||
-      ent.__promisify$$ ||
-      (options && false === options.ent))
-  {
+function promisify_entity(ent, options) {
+  if (null == ent || ent.__promisify$$ || (options && false === options.ent)) {
     return ent
   }
 

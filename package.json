@@ -1,6 +1,6 @@
 {
   "name": "seneca-promisify",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Seneca plugin for user and promisify permissions.",
   "main": "promisify.js",
   "scripts": {

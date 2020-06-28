@@ -1,5 +1,5 @@
 # seneca-promisify
-[Seneca](senecajs.org) plugin for user and promisify membership.
+[Seneca](senecajs.org) plugin providing a promise-based API.
 
 [![Npm][BadgeNpm]][Npm]
 [![Travis][BadgeTravis]][Travis]
@@ -28,12 +28,6 @@ var reply = await seneca.post('a:1')
 
 ```
 
-
-## Inbound Messages
-
-
-
-## Implementations
 
 
 

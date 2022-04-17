@@ -1,6 +1,6 @@
 {
   "name": "seneca-promisify",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "Seneca plugin for user and promisify permissions.",
   "main": "promisify.js",
   "scripts": {
@@ -36,13 +36,13 @@
     "optioner": "^5.0.1"
   },
   "devDependencies": {
-    "@hapi/code": "^8.0.1",
-    "@hapi/lab": "^22.0.4",
-    "coveralls": "^3.1.0",
-    "jsonic": "^0.3.1",
-    "prettier": "^2.0.5",
+    "@hapi/code": "^8.0.7",
+    "@hapi/lab": "^24.6.0",
+    "coveralls": "^3.1.1",
+    "jsonic": "^1.0.1",
+    "prettier": "^2.6.2",
     "seneca": "plugin",
-    "seneca-entity": "^9.0.1",
+    "seneca-entity": "^16.1.0",
     "seneca-joi": "^7.0.2",
     "seneca-plugin-validator": "0.6.1"
   }

@@ -536,7 +536,7 @@
         <li><a href="#tests">Test Report</a></li>
         <li><a href="#coverage">Coverage Report</a></li>
         <li class="">
-            <span class="cov high">95.83</span>
+            <span class="cov medium">73.33</span>
             <a href="#promisify.js"><span class="basename">promisify.js</span></a>
         </li>
         <li><a href="#linting">Linting Report</a></li>
@@ -547,7 +547,7 @@
           <div class="failures">0</div>
           <div class="skipped">0</div>
           <div class="test-count">10</div>
-          <div class="duration">853</div>
+          <div class="duration">1126</div>
       </div>
       <div id="filters">
           <input type="checkbox" checked="" onchange="filter(this)" value="success" id="show-success">
@@ -570,81 +570,81 @@
               <td class="test-title">validate
                   
               </td>
-              <td class="test-duration">4</td>
+              <td class="test-duration">33</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">2</td>
               <td class="test-title">happy
                   
               </td>
-              <td class="test-duration">148</td>
+              <td class="test-duration">167</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">3</td>
               <td class="test-title">no-action
                   
               </td>
-              <td class="test-duration">128</td>
+              <td class="test-duration">147</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">4</td>
               <td class="test-title">close
                   
               </td>
-              <td class="test-duration">133</td>
+              <td class="test-duration">142</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">5</td>
               <td class="test-title">validate-handle
                   
               </td>
-              <td class="test-duration">26</td>
+              <td class="test-duration">67</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">6</td>
               <td class="test-title">plugin
                   
               </td>
-              <td class="test-duration">37</td>
+              <td class="test-duration">65</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">7</td>
               <td class="test-title">entity
                   
               </td>
-              <td class="test-duration">46</td>
+              <td class="test-duration">84</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">8</td>
               <td class="test-title">prepare-entity
                   
               </td>
-              <td class="test-duration">127</td>
+              <td class="test-duration">169</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">9</td>
               <td class="test-title">prior
                   
               </td>
-              <td class="test-duration">49</td>
+              <td class="test-duration">68</td>
           </tr>
           <tr class="show  success">
               <td class="test-id">10</td>
               <td class="test-title">ready
                   
               </td>
-              <td class="test-duration">149</td>
+              <td class="test-duration">181</td>
           </tr>
           </tbody>
       </table>
     
     </div>    <div id="coverage">
         <h1>Code Coverage Report</h1>
-        <div class="stats high">
-            <div class="percentage">95.83%</div>
+        <div class="stats medium">
+            <div class="percentage">73.33%</div>
             <div class="sloc">120</div>
-            <div class="hits">115</div>
-            <div class="misses">5</div>
+            <div class="hits">88</div>
+            <div class="misses">32</div>
         </div>
         <div id="filters">
           <input type="checkbox" checked="" onchange="filter(this)" value="generated" id="show-generated">
@@ -653,11 +653,11 @@
         <div id="files">
             <div class="file ">
                 <h2 id="promisify.js">promisify.js </h2>
-                <div class="stats high">
-                    <div class="percentage">95.83%</div>
+                <div class="stats medium">
+                    <div class="percentage">73.33%</div>
                     <div class="sloc">120</div>
-                    <div class="hits">115</div>
-                    <div class="misses">5</div>
+                    <div class="hits">88</div>
+                    <div class="misses">32</div>
                 </div>
                 <table>
                     <thead>
@@ -1316,12 +1316,12 @@
                           <td class="line" data-tooltip>108</td>
                           <td class="lint empty"></td>
                           <td class="hits" data-tooltip></td>
-                          <td class="source"><div>  if (null &#x3D;&#x3D; ent || ent.__promisify$$ || (options &amp;&amp; </div><div class="miss false" data-tooltip>false &#x3D;&#x3D;&#x3D; options.ent</div><div>)) {</div></td>
+                          <td class="source"><div>  if (</div><div class="miss false" data-tooltip>null &#x3D;&#x3D; ent</div><div> || </div><div class="miss true" data-tooltip>ent.__promisify$$</div><div> || (</div><div class="miss never" data-tooltip>options &amp;&amp; false &#x3D;&#x3D;&#x3D; options.ent</div><div>)) {</div></td>
                           
                         </tr>            <tr id="promisify.js__109" class="hit">
                           <td class="line" data-tooltip>109</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>10</td>
+                          <td class="hits" data-tooltip>9</td>
                           <td class="source">    return ent</td>
                           
                         </tr>            <tr id="promisify.js__110" class="hit">
@@ -1336,11 +1336,11 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__112" class="hit">
+                        </tr>            <tr id="promisify.js__112" class="miss">
                           <td class="line" data-tooltip>112</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__promisify$$ &#x3D; true</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__promisify$$ &#x3D; true</td>
                           
                         </tr>            <tr id="promisify.js__113" class="hit">
                           <td class="line" data-tooltip>113</td>
@@ -1348,41 +1348,41 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__114" class="hit">
+                        </tr>            <tr id="promisify.js__114" class="miss">
                           <td class="line" data-tooltip>114</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__make$$ &#x3D; ent.make$</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__make$$ &#x3D; ent.make$</td>
                           
-                        </tr>            <tr id="promisify.js__115" class="hit">
+                        </tr>            <tr id="promisify.js__115" class="miss">
                           <td class="line" data-tooltip>115</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__load$$ &#x3D; Util.promisify(ent.load$)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__load$$ &#x3D; Util.promisify(ent.load$)</td>
                           
-                        </tr>            <tr id="promisify.js__116" class="hit">
+                        </tr>            <tr id="promisify.js__116" class="miss">
                           <td class="line" data-tooltip>116</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__save$$ &#x3D; Util.promisify(ent.save$)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__save$$ &#x3D; Util.promisify(ent.save$)</td>
                           
-                        </tr>            <tr id="promisify.js__117" class="hit">
+                        </tr>            <tr id="promisify.js__117" class="miss">
                           <td class="line" data-tooltip>117</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__list$$ &#x3D; Util.promisify(ent.list$)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__list$$ &#x3D; Util.promisify(ent.list$)</td>
                           
-                        </tr>            <tr id="promisify.js__118" class="hit">
+                        </tr>            <tr id="promisify.js__118" class="miss">
                           <td class="line" data-tooltip>118</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__remove$$ &#x3D; Util.promisify(ent.remove$)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__remove$$ &#x3D; Util.promisify(ent.remove$)</td>
                           
-                        </tr>            <tr id="promisify.js__119" class="hit">
+                        </tr>            <tr id="promisify.js__119" class="miss">
                           <td class="line" data-tooltip>119</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.__close$$ &#x3D; Util.promisify(ent.close$)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.__close$$ &#x3D; Util.promisify(ent.close$)</td>
                           
                         </tr>            <tr id="promisify.js__120" class="hit">
                           <td class="line" data-tooltip>120</td>
@@ -1390,23 +1390,23 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__121" class="hit">
+                        </tr>            <tr id="promisify.js__121" class="miss">
                           <td class="line" data-tooltip>121</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.make$ &#x3D; function () {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.make$ &#x3D; function () {</td>
                           
-                        </tr>            <tr id="promisify.js__122" class="hit">
+                        </tr>            <tr id="promisify.js__122" class="chunks">
                           <td class="line" data-tooltip>122</td>
                           <td class="lint empty"></td>
                           <td class="hits" data-tooltip></td>
-                          <td class="source">    var outent &#x3D; ent.__make$$.apply(ent, arguments)</td>
+                          <td class="source"><div>    </div><div class="miss never" data-tooltip>var outent &#x3D; ent.__make$$.apply(ent, arguments)</div></td>
                           
-                        </tr>            <tr id="promisify.js__123" class="hit">
+                        </tr>            <tr id="promisify.js__123" class="miss">
                           <td class="line" data-tooltip>123</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>11</td>
-                          <td class="source">    return promisify_entity(outent)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>    return promisify_entity(outent)</td>
                           
                         </tr>            <tr id="promisify.js__124" class="hit">
                           <td class="line" data-tooltip>124</td>
@@ -1420,23 +1420,23 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__126" class="hit">
+                        </tr>            <tr id="promisify.js__126" class="miss">
                           <td class="line" data-tooltip>126</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.load$ &#x3D; async function () {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.load$ &#x3D; async function () {</td>
                           
-                        </tr>            <tr id="promisify.js__127" class="hit">
+                        </tr>            <tr id="promisify.js__127" class="chunks">
                           <td class="line" data-tooltip>127</td>
                           <td class="lint empty"></td>
                           <td class="hits" data-tooltip></td>
-                          <td class="source">    var outent &#x3D; await ent.__load$$.apply(ent, arguments)</td>
+                          <td class="source"><div>    </div><div class="miss never" data-tooltip>var outent &#x3D; await ent.__load$$.apply(ent, arguments)</div></td>
                           
-                        </tr>            <tr id="promisify.js__128" class="hit">
+                        </tr>            <tr id="promisify.js__128" class="miss">
                           <td class="line" data-tooltip>128</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>2</td>
-                          <td class="source">    return promisify_entity(outent)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>    return promisify_entity(outent)</td>
                           
                         </tr>            <tr id="promisify.js__129" class="hit">
                           <td class="line" data-tooltip>129</td>
@@ -1450,23 +1450,23 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__131" class="hit">
+                        </tr>            <tr id="promisify.js__131" class="miss">
                           <td class="line" data-tooltip>131</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.save$ &#x3D; async function () {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.save$ &#x3D; async function () {</td>
                           
-                        </tr>            <tr id="promisify.js__132" class="hit">
+                        </tr>            <tr id="promisify.js__132" class="chunks">
                           <td class="line" data-tooltip>132</td>
                           <td class="lint empty"></td>
                           <td class="hits" data-tooltip></td>
-                          <td class="source">    var outent &#x3D; await ent.__save$$.apply(ent, arguments)</td>
+                          <td class="source"><div>    </div><div class="miss never" data-tooltip>var outent &#x3D; await ent.__save$$.apply(ent, arguments)</div></td>
                           
-                        </tr>            <tr id="promisify.js__133" class="hit">
+                        </tr>            <tr id="promisify.js__133" class="miss">
                           <td class="line" data-tooltip>133</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>4</td>
-                          <td class="source">    return promisify_entity(outent)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>    return promisify_entity(outent)</td>
                           
                         </tr>            <tr id="promisify.js__134" class="hit">
                           <td class="line" data-tooltip>134</td>
@@ -1480,29 +1480,29 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__136" class="hit">
+                        </tr>            <tr id="promisify.js__136" class="miss">
                           <td class="line" data-tooltip>136</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.list$ &#x3D; async function () {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.list$ &#x3D; async function () {</td>
                           
-                        </tr>            <tr id="promisify.js__137" class="hit">
+                        </tr>            <tr id="promisify.js__137" class="chunks">
                           <td class="line" data-tooltip>137</td>
                           <td class="lint empty"></td>
                           <td class="hits" data-tooltip></td>
-                          <td class="source">    var outlist &#x3D; await ent.__list$$.apply(ent, arguments)</td>
+                          <td class="source"><div>    </div><div class="miss never" data-tooltip>var outlist &#x3D; await ent.__list$$.apply(ent, arguments)</div></td>
                           
-                        </tr>            <tr id="promisify.js__138" class="hit">
+                        </tr>            <tr id="promisify.js__138" class="miss">
                           <td class="line" data-tooltip>138</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>2</td>
-                          <td class="source">    for (var i &#x3D; 0; i &lt; outlist.length; i++) {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>    for (var i &#x3D; 0; i &lt; outlist.length; i++) {</td>
                           
-                        </tr>            <tr id="promisify.js__139" class="hit">
+                        </tr>            <tr id="promisify.js__139" class="miss">
                           <td class="line" data-tooltip>139</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>3</td>
-                          <td class="source">      outlist[i] &#x3D; promisify_entity(outlist[i])</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>      outlist[i] &#x3D; promisify_entity(outlist[i])</td>
                           
                         </tr>            <tr id="promisify.js__140" class="hit">
                           <td class="line" data-tooltip>140</td>
@@ -1510,11 +1510,11 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source">    }</td>
                           
-                        </tr>            <tr id="promisify.js__141" class="hit">
+                        </tr>            <tr id="promisify.js__141" class="miss">
                           <td class="line" data-tooltip>141</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>2</td>
-                          <td class="source">    return outlist</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>    return outlist</td>
                           
                         </tr>            <tr id="promisify.js__142" class="hit">
                           <td class="line" data-tooltip>142</td>
@@ -1528,23 +1528,23 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__144" class="hit">
+                        </tr>            <tr id="promisify.js__144" class="miss">
                           <td class="line" data-tooltip>144</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.remove$ &#x3D; async function () {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.remove$ &#x3D; async function () {</td>
                           
-                        </tr>            <tr id="promisify.js__145" class="hit">
+                        </tr>            <tr id="promisify.js__145" class="chunks">
                           <td class="line" data-tooltip>145</td>
                           <td class="lint empty"></td>
                           <td class="hits" data-tooltip></td>
-                          <td class="source">    var outent &#x3D; await ent.__remove$$.apply(ent, arguments)</td>
+                          <td class="source"><div>    </div><div class="miss never" data-tooltip>var outent &#x3D; await ent.__remove$$.apply(ent, arguments)</div></td>
                           
-                        </tr>            <tr id="promisify.js__146" class="hit">
+                        </tr>            <tr id="promisify.js__146" class="miss">
                           <td class="line" data-tooltip>146</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>1</td>
-                          <td class="source">    return promisify_entity(outent)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>    return promisify_entity(outent)</td>
                           
                         </tr>            <tr id="promisify.js__147" class="hit">
                           <td class="line" data-tooltip>147</td>
@@ -1558,11 +1558,11 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__149" class="hit">
+                        </tr>            <tr id="promisify.js__149" class="miss">
                           <td class="line" data-tooltip>149</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.close$ &#x3D; async function () {</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.close$ &#x3D; async function () {</td>
                           
                         </tr>            <tr id="promisify.js__150" class="chunks">
                           <td class="line" data-tooltip>150</td>
@@ -1588,11 +1588,11 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__154" class="hit">
+                        </tr>            <tr id="promisify.js__154" class="miss">
                           <td class="line" data-tooltip>154</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  ent.native$ &#x3D; Util.promisify(ent.native$)</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  ent.native$ &#x3D; Util.promisify(ent.native$)</td>
                           
                         </tr>            <tr id="promisify.js__155" class="hit">
                           <td class="line" data-tooltip>155</td>
@@ -1600,11 +1600,11 @@
                           <td class="hits" data-tooltip></td>
                           <td class="source"></td>
                           
-                        </tr>            <tr id="promisify.js__156" class="hit">
+                        </tr>            <tr id="promisify.js__156" class="miss">
                           <td class="line" data-tooltip>156</td>
                           <td class="lint empty"></td>
-                          <td class="hits" data-tooltip>20</td>
-                          <td class="source">  return ent</td>
+                          <td class="hits" data-tooltip></td>
+                          <td class="source" data-tooltip>  return ent</td>
                           
                         </tr>            <tr id="promisify.js__157" class="hit">
                           <td class="line" data-tooltip>157</td>

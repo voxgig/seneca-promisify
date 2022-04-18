@@ -35,15 +35,16 @@
   "dependencies": {
     "optioner": "^5.0.1"
   },
+  "peerDependencies": {
+    "seneca": ">=3"
+  },
   "devDependencies": {
     "@hapi/code": "^8.0.7",
     "@hapi/lab": "^24.6.0",
     "coveralls": "^3.1.1",
     "jsonic": "^1.0.1",
     "prettier": "^2.6.2",
-    "seneca": "plugin",
     "seneca-entity": "^16.1.0",
-    "seneca-joi": "^7.0.2",
     "seneca-plugin-validator": "0.6.1"
   }
 }

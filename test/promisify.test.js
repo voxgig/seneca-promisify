@@ -11,7 +11,6 @@ const expect = Code.expect
 const PluginValidator = require('seneca-plugin-validator')
 const Seneca = require('seneca')
 const Optioner = require('optioner')
-const Joi = Optioner.Joi
 
 const Plugin = require('..')
 
@@ -78,7 +77,7 @@ lab.test('validate-handle', async () => {
   }
 
   a1.validate = {
-    x: Joi.number(),
+    x: Number,
   }
 
   a1.handle = function () {}
@@ -228,9 +227,5 @@ lab.test('ready', async () => {
 })
 
 function seneca_instance(fin, testmode) {
-  return Seneca()
-    .test(fin, testmode)
-    .use(Plugin)
-    .use('seneca-joi')
-    .use('entity')
+  return Seneca().test(fin, testmode).use(Plugin).use('entity')
 }

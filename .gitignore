@@ -60,5 +60,4 @@ typings/
 *~
 package-lock.json
 yarn.lock
-
 test/coverage.html

@@ -37,6 +37,33 @@ lab.test('happy', async () => {
   expect(counter).equal(2)
 })
 
+lab.test('message', async () => {
+  var counter = 0
+
+  var si = seneca_instance().message('a:1', { b: 2 }, async function (msg) {
+    counter++
+    return { x: msg.x }
+  })
+
+  // async message (no response)
+  si.send('a:1,b:2,x:2')
+
+  // sync message (has response)
+  var out = await si.post('a:1,b:2,x:3')
+  expect(out.x).equal(3)
+
+  expect(counter).equal(2)
+
+  si.add('s:1')
+    .sub('s:1', function () {
+      counter++
+    })
+    .act('s:1')
+  await si.ready()
+
+  expect(counter).equal(3)
+})
+
 lab.test('no-action', async () => {
   var tmp = { a1: 0, a1x1: 0 }
 

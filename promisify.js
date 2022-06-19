@@ -1,7 +1,7 @@
-/* Copyright (c) 2018-2020 voxgig and other contributors, MIT License */
+/* Copyright (c) 2018-2022 voxgig and other contributors, MIT License */
 'use strict'
 
-// An experimental promise interface for Seneca
+// A promise interface for Seneca
 
 var Util = require('util')
 
@@ -18,32 +18,39 @@ module.exports.preload = function preload_promisify(plugin) {
   }
   self.root.post = Util.promisify(this.act)
 
-  self.root.message = function (pattern, action) {
+  self.root.message = function (pattern0, pattern1, action) {
+    let actfunc = action || pattern1
     var action_wrapper =
-      null == action
+      null == actfunc
         ? null
         : function (msg, reply, meta) {
-            action.call(this, msg, meta).then(reply).catch(reply)
+            actfunc.call(this, msg, meta).then(reply).catch(reply)
           }
 
-    if (null != action && null != action_wrapper) {
-      if ('' != action.name) {
-        Object.defineProperty(action_wrapper, 'name', { value: action.name })
+    if (null != actfunc && null != action_wrapper) {
+      if ('' != actfunc.name) {
+        Object.defineProperty(action_wrapper, 'name', { value: actfunc.name })
       }
 
-      for (var p in action) {
-        action_wrapper[p] = action[p]
+      for (var p in actfunc) {
+        action_wrapper[p] = actfunc[p]
       }
 
       // NOTE: also set properties defined after call to seneca.message
       setImmediate(function () {
-        for (var p in action) {
-          action_wrapper[p] = action[p]
+        for (var p in actfunc) {
+          action_wrapper[p] = actfunc[p]
         }
       })
     }
 
-    this.add(pattern, action_wrapper)
+    if (action) {
+      this.add(pattern0, pattern1, action_wrapper)
+    } else if (action_wrapper) {
+      this.add(pattern0, action_wrapper)
+    } else {
+      this.add(pattern0)
+    }
 
     return this
   }

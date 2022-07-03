@@ -142,20 +142,17 @@ lab.test('plugin', async () => {
   expect(out).equal({ x: 2, y: 50 })
 })
 
-
 lab.test('plugin-prepare', async () => {
-  const tmp = {log:[]}
+  const tmp = { log: [] }
 
   var si = seneca_instance().use(function p1() {
     var y = 0
 
-    this
-      .message('a:1', async function a0(msg) {
-        return { x: msg.x, y: y }
-      })
-      .prepare(async function () {
-        y = 50
-      })
+    this.message('a:1', async function a0(msg) {
+      return { x: msg.x, y: y }
+    }).prepare(async function () {
+      y = 50
+    })
   })
 
   var out = await si.post('a:1,x:2')
@@ -163,14 +160,12 @@ lab.test('plugin-prepare', async () => {
 
   si.use(function p1$t0() {
     let y = -1
-    this
-      .prepare(async function() {
-        y = 0
-        tmp.log.push('p1$t0/0')
-      })
-      .message('p1:a', async function p1a(msg) {
-        return { x: msg.x, y: y }
-      })
+    this.prepare(async function () {
+      y = 0
+      tmp.log.push('p1$t0/0')
+    }).message('p1:a', async function p1a(msg) {
+      return { x: msg.x, y: y }
+    })
   })
 
   out = await si.post('p1:a,x:3')
@@ -178,112 +173,118 @@ lab.test('plugin-prepare', async () => {
 
   expect(si.list('init:p1')).equals([
     { init: 'p1', plugin: 'init', role: 'seneca' },
-    { init: 'p1', plugin: 'init', role: 'seneca', tag: 't0' }
+    { init: 'p1', plugin: 'init', role: 'seneca', tag: 't0' },
   ])
 })
 
-
 lab.test('plugin-destroy', async () => {
-  const tmp = {log:[]}
-  
+  const tmp = { log: [] }
+
   var si = seneca_instance()
-      .use(function p0() {
-        this.destroy(async function p0d() {
-          tmp.log.push('p0')
-        })
+    .use(function p0() {
+      this.destroy(async function p0d() {
+        tmp.log.push('p0')
       })
-      .use(function p1() {
-        this.destroy(async function p1d() {
-          tmp.log.push('p1')
-        })
+    })
+    .use(function p1() {
+      this.destroy(async function p1d() {
+        tmp.log.push('p1')
       })
+    })
 
   await si.ready()
   await si.close()
 
   // NOTE: inverse order
-  expect(tmp).equal({log:['p1','p0']})
+  expect(tmp).equal({ log: ['p1', 'p0'] })
 })
 
-
 lab.test('plugin-multi-prepare-destroy', async () => {
-  const tmp = {log:[]}
-  
+  const tmp = { log: [] }
+
   var si = seneca_instance()
-      .use(function p0() {
-        let y = -1
-        this
-          .prepare(async function p0p0() {
-            tmp.log.push('p0p0')
-            y = 0
-          })
-          .destroy(async function p0d0() {
-            tmp.log.push('p0d0')
-          })
-          .message('p:p0,get:y', async ()=>({y}))
+    .use(function p0() {
+      let y = -1
+      this.prepare(async function p0p0() {
+        tmp.log.push('p0p0')
+        y = 0
       })
-      .use(function p1() {
-        let y = -1
-        this
-          .prepare(async function p1p0() {
-            tmp.log.push('p1p0')
-            y = 0
-          })
-          .prepare(async function p1p1() {
-            tmp.log.push('p1p1')
-            y = 1
-          })
-          .destroy(async function p1d0() {
-            tmp.log.push('p1d0')
-          })
-          .destroy(async function p1d1() {
-            tmp.log.push('p1d1')
-          })
-          .message('p:p1,get:y', async ()=>({y}))
+        .destroy(async function p0d0() {
+          tmp.log.push('p0d0')
+        })
+        .message('p:p0,get:y', async () => ({ y }))
+    })
+    .use(function p1() {
+      let y = -1
+      this.prepare(async function p1p0() {
+        tmp.log.push('p1p0')
+        y = 0
       })
-      .use(function p2() {
-        let y = -1
-        this
-          .prepare(async function p2p0() {
-            tmp.log.push('p2p0')
-            y = 0
-          })
-          .prepare(async function p2p1() {
-            tmp.log.push('p2p1')
-            y = 1
-          })
-          .prepare(async function p2p2() {
-            tmp.log.push('p2p2')
-            y = 2
-          })
-          .destroy(async function p2d0() {
-            tmp.log.push('p2d0')
-          })
-          .destroy(async function p2d1() {
-            tmp.log.push('p2d1')
-          })
-          .destroy(async function p2d2() {
-            tmp.log.push('p2d2')
-          })
-          .message('p:p2,get:y', async ()=>({y}))
+        .prepare(async function p1p1() {
+          tmp.log.push('p1p1')
+          y = 1
+        })
+        .destroy(async function p1d0() {
+          tmp.log.push('p1d0')
+        })
+        .destroy(async function p1d1() {
+          tmp.log.push('p1d1')
+        })
+        .message('p:p1,get:y', async () => ({ y }))
+    })
+    .use(function p2() {
+      let y = -1
+      this.prepare(async function p2p0() {
+        tmp.log.push('p2p0')
+        y = 0
       })
+        .prepare(async function p2p1() {
+          tmp.log.push('p2p1')
+          y = 1
+        })
+        .prepare(async function p2p2() {
+          tmp.log.push('p2p2')
+          y = 2
+        })
+        .destroy(async function p2d0() {
+          tmp.log.push('p2d0')
+        })
+        .destroy(async function p2d1() {
+          tmp.log.push('p2d1')
+        })
+        .destroy(async function p2d2() {
+          tmp.log.push('p2d2')
+        })
+        .message('p:p2,get:y', async () => ({ y }))
+    })
 
   await si.ready()
 
   // NOTE: prior order!
-  expect(await si.post('p:p0,get:y')).equal({y:0})
-  expect(await si.post('p:p1,get:y')).equal({y:0})
-  expect(await si.post('p:p2,get:y')).equal({y:0})
-  
+  expect(await si.post('p:p0,get:y')).equal({ y: 0 })
+  expect(await si.post('p:p1,get:y')).equal({ y: 0 })
+  expect(await si.post('p:p2,get:y')).equal({ y: 0 })
+
   await si.close()
 
   // NOTE: inverse order, by design, these are just priors!
-  expect(tmp).equal({log:[
-    'p0p0', 'p1p1', 'p1p0', 'p2p2', 'p2p1', 'p2p0',
-    'p2d2', 'p2d1', 'p2d0', 'p1d1', 'p1d0', 'p0d0'
-  ]})
+  expect(tmp).equal({
+    log: [
+      'p0p0',
+      'p1p1',
+      'p1p0',
+      'p2p2',
+      'p2p1',
+      'p2p0',
+      'p2d2',
+      'p2d1',
+      'p2d0',
+      'p1d1',
+      'p1d0',
+      'p0d0',
+    ],
+  })
 })
-
 
 lab.test('entity', async () => {
   var si = seneca_instance()

@@ -55,7 +55,6 @@ module.exports.preload = function preload_promisify(plugin) {
     return this
   }
 
-
   /*
   self.root.prepare = function (prepare) {
     var prepare_wrapper = function (done) {
@@ -75,30 +74,26 @@ module.exports.preload = function preload_promisify(plugin) {
     return this
   }
   */
-  
-
 
   self.root.prepare = function (prepare) {
     async function prepare_wrapper(msg) {
       try {
-        await prepare.call(this,msg)
-      }
-      catch(e) {
+        await prepare.call(this, msg)
+      } catch (e) {
         this.log.error(e)
-      }
-      finally {
+      } finally {
         return this.prior(msg)
       }
     }
 
     if ('' != prepare.name) {
       Object.defineProperty(prepare_wrapper, 'name', {
-        value: 'prepare_'+prepare.name
+        value: 'prepare_' + prepare.name,
       })
     }
 
     const plugin = this.plugin
-    
+
     let pat = {
       role: 'seneca',
       plugin: 'init',
@@ -111,42 +106,37 @@ module.exports.preload = function preload_promisify(plugin) {
 
     this.message(pat, prepare_wrapper)
 
-    this.plugin.prepare = (this.plugin.prepare || [])
+    this.plugin.prepare = this.plugin.prepare || []
     this.plugin.prepare.push(prepare)
-    
+
     return this
   }
 
-  
   self.root.destroy = function (destroy) {
     async function destroy_wrapper(msg) {
       try {
-        await destroy.call(this,msg)
-      }
-      catch(e) {
+        await destroy.call(this, msg)
+      } catch (e) {
         this.log.error(e)
-      }
-      finally {
+      } finally {
         return this.prior(msg)
       }
     }
 
     if ('' != destroy.name) {
       Object.defineProperty(destroy_wrapper, 'name', {
-        value: 'destroy_'+destroy.name
+        value: 'destroy_' + destroy.name,
       })
     }
 
     this.message('role:seneca,cmd:close', destroy_wrapper)
 
-    this.plugin.destroy = (this.plugin.destroy || [])
+    this.plugin.destroy = this.plugin.destroy || []
     this.plugin.destroy.push(destroy)
-    
+
     return this
   }
 
-
-  
   const __prior$$ = self.root.prior
   const __priorAsync$$ = Util.promisify(self.root.prior)
 
@@ -180,6 +170,5 @@ module.exports.preload = function preload_promisify(plugin) {
 
   self.root.__promisify$$ = true
 }
-
 
 function promisify(options) {}

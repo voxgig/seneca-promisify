@@ -1,5 +1,10 @@
 # seneca-promisify
-[Seneca](senecajs.org) plugin providing a promise-based API.
+[Seneca](senecajs.org) plugin providing a Promise-based API.
+
+This is an interim plugin to provide a Promise-based API to Seneca.
+
+NOTE: no longer provides a Promises API for entities, as seneca-entity
+18.x+ provides this directly.
 
 [![Npm][BadgeNpm]][Npm]
 [![Travis][BadgeTravis]][Travis]
@@ -28,8 +33,6 @@ var reply = await seneca.post('a:1')
 
 
 ```
-
-
 
 
 [BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-promisify/badge.svg?branch=master&service=github

@@ -55,27 +55,98 @@ module.exports.preload = function preload_promisify(plugin) {
     return this
   }
 
-  if (null == self.root.entity) {
-    self.root.entity = function () {
-      var ent = this.make.apply(this, arguments)
-      ent = promisify_entity(ent, options)
-      return ent
+
+  /*
+  self.root.prepare = function (prepare) {
+    var prepare_wrapper = function (done) {
+      prepare.call(this).then(done).catch(done)
     }
+    if ('' != prepare.name) {
+      Object.defineProperty(prepare_wrapper, 'name', {
+        value: 'wrapper_'+prepare.name
+      })
+    }
+
+    this.init(prepare_wrapper)
+
+    this.plugin.prepare = (this.plugin.prepare || [])
+    this.plugin.prepare.push(prepare)
+    
+    return this
   }
+  */
+  
 
-  self.root.prepare = function (init) {
-    var init_wrapper = function (done) {
-      init.call(this).then(done).catch(done)
+
+  self.root.prepare = function (prepare) {
+    async function prepare_wrapper(msg) {
+      try {
+        await prepare.call(this,msg)
+      }
+      catch(e) {
+        this.log.error(e)
+      }
+      finally {
+        return this.prior(msg)
+      }
     }
-    if ('' != init.name) {
-      Object.defineProperty(init_wrapper, 'name', { value: init.name })
+
+    if ('' != prepare.name) {
+      Object.defineProperty(prepare_wrapper, 'name', {
+        value: 'prepare_'+prepare.name
+      })
     }
 
-    this.init(init_wrapper)
+    const plugin = this.plugin
+    
+    let pat = {
+      role: 'seneca',
+      plugin: 'init',
+      init: plugin.name,
+    }
 
+    if (null != plugin.tag && '-' != plugin.tag) {
+      pat.tag = plugin.tag
+    }
+
+    this.message(pat, prepare_wrapper)
+
+    this.plugin.prepare = (this.plugin.prepare || [])
+    this.plugin.prepare.push(prepare)
+    
     return this
   }
 
+  
+  self.root.destroy = function (destroy) {
+    async function destroy_wrapper(msg) {
+      try {
+        await destroy.call(this,msg)
+      }
+      catch(e) {
+        this.log.error(e)
+      }
+      finally {
+        return this.prior(msg)
+      }
+    }
+
+    if ('' != destroy.name) {
+      Object.defineProperty(destroy_wrapper, 'name', {
+        value: 'destroy_'+destroy.name
+      })
+    }
+
+    this.message('role:seneca,cmd:close', destroy_wrapper)
+
+    this.plugin.destroy = (this.plugin.destroy || [])
+    this.plugin.destroy.push(destroy)
+    
+    return this
+  }
+
+
+  
   const __prior$$ = self.root.prior
   const __priorAsync$$ = Util.promisify(self.root.prior)
 
@@ -110,57 +181,5 @@ module.exports.preload = function preload_promisify(plugin) {
   self.root.__promisify$$ = true
 }
 
-// In seneca 4, update seneca-entity to be async/await
-function promisify_entity(ent, options) {
-  if (null == ent || ent.__promisify$$ || (options && false === options.ent)) {
-    return ent
-  }
-
-  ent.__promisify$$ = true
-
-  ent.__make$$ = ent.make$
-  ent.__load$$ = Util.promisify(ent.load$)
-  ent.__save$$ = Util.promisify(ent.save$)
-  ent.__list$$ = Util.promisify(ent.list$)
-  ent.__remove$$ = Util.promisify(ent.remove$)
-  ent.__close$$ = Util.promisify(ent.close$)
-
-  ent.make$ = function () {
-    var outent = ent.__make$$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
-
-  ent.load$ = async function () {
-    var outent = await ent.__load$$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
-
-  ent.save$ = async function () {
-    var outent = await ent.__save$$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
-
-  ent.list$ = async function () {
-    var outlist = await ent.__list$$.apply(ent, arguments)
-    for (var i = 0; i < outlist.length; i++) {
-      outlist[i] = promisify_entity(outlist[i])
-    }
-    return outlist
-  }
-
-  ent.remove$ = async function () {
-    var outent = await ent.__remove$$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
-
-  ent.close$ = async function () {
-    var outent = await ent.__close$$.apply(ent, arguments)
-    return promisify_entity(outent)
-  }
-
-  ent.native$ = Util.promisify(ent.native$)
-
-  return ent
-}
 
 function promisify(options) {}

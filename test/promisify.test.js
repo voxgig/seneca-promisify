@@ -399,6 +399,15 @@ lab.test('ready', async () => {
   expect(si === so).true()
 })
 
+lab.test('actives', async () => {
+  var si = Seneca().test().use(Plugin,{active:{
+    message:false
+  }})
+
+  expect(si.message).to.not.exist()
+  expect(si.post).to.exist()
+})
+
 function seneca_instance(fin, testmode) {
   return Seneca().test(fin, testmode).use(Plugin).use('entity')
 }

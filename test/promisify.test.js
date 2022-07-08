@@ -400,9 +400,13 @@ lab.test('ready', async () => {
 })
 
 lab.test('actives', async () => {
-  var si = Seneca().test().use(Plugin,{active:{
-    message:false
-  }})
+  var si = Seneca()
+    .test()
+    .use(Plugin, {
+      active: {
+        message: false,
+      },
+    })
 
   expect(si.message).to.not.exist()
   expect(si.post).to.exist()

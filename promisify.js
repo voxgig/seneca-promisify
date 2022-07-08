@@ -16,27 +16,25 @@ module.exports.preload = function preload_promisify(plugin) {
     ...plugin.defaults.active,
     ...plugin.options.active,
   }
-  
+
   self.root.send = function (msg) {
     this.act(msg)
     return this
   }
 
-  
-  if(actives.post) {
+  if (actives.post) {
     self.root.post = Util.promisify(this.act)
   }
 
-  
-  if(actives.message) {
+  if (actives.message) {
     self.root.message = function (pattern0, pattern1, action) {
       let actfunc = action || pattern1
       var action_wrapper =
-          null == actfunc
+        null == actfunc
           ? null
           : function (msg, reply, meta) {
-            actfunc.call(this, msg, meta).then(reply).catch(reply)
-          }
+              actfunc.call(this, msg, meta).then(reply).catch(reply)
+            }
 
       if (null != actfunc && null != action_wrapper) {
         if ('' != actfunc.name) {
@@ -67,8 +65,7 @@ module.exports.preload = function preload_promisify(plugin) {
     }
   }
 
-
-  if(actives.prepare) {
+  if (actives.prepare) {
     self.root.prepare = function (prepare) {
       async function prepare_wrapper(msg) {
         await prepare.call(this, msg)
@@ -101,9 +98,8 @@ module.exports.preload = function preload_promisify(plugin) {
       return this
     }
   }
-  
 
-  if(actives.destroy) {
+  if (actives.destroy) {
     self.root.destroy = function (destroy) {
       async function destroy_wrapper(msg) {
         await destroy.call(this, msg)
@@ -125,16 +121,14 @@ module.exports.preload = function preload_promisify(plugin) {
     }
   }
 
-  
   const __prior$$ = self.root.prior
   const __priorAsync$$ = Util.promisify(self.root.prior)
 
-
-  if(actives.prior) {
+  if (actives.prior) {
     self.root.prior = async function () {
       var last_is_func =
-          1 < arguments.length &&
-          'function' == typeof arguments[arguments.length - 1]
+        1 < arguments.length &&
+        'function' == typeof arguments[arguments.length - 1]
 
       if (last_is_func) {
         return __prior$$.apply(this, arguments)
@@ -144,16 +138,14 @@ module.exports.preload = function preload_promisify(plugin) {
     }
   }
 
-  
   const __ready$$ = self.root.ready
   const __readyAsync$$ = Util.promisify(self.root.ready)
 
-  
-  if(actives.ready) {
+  if (actives.ready) {
     self.root.ready = async function () {
       var last_is_func =
-          0 < arguments.length &&
-          'function' == typeof arguments[arguments.length - 1]
+        0 < arguments.length &&
+        'function' == typeof arguments[arguments.length - 1]
 
       if (last_is_func) {
         return __ready$$.apply(this, arguments)
@@ -163,12 +155,11 @@ module.exports.preload = function preload_promisify(plugin) {
       }
     }
   }
-  
+
   self.root.__promisify$$ = true
 }
 
 function promisify(options) {}
-
 
 promisify.defaults = {
   active: {
@@ -178,6 +169,5 @@ promisify.defaults = {
     destroy: true,
     prior: true,
     ready: true,
-  }
+  },
 }
-

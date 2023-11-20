@@ -171,3 +171,6 @@ promisify.defaults = {
     ready: true,
   },
 }
+
+// Prevent name mangling
+Object.defineProperty(promisify, 'name', { value: 'promisify' })

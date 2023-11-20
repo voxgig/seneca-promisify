@@ -16,7 +16,7 @@ const Plugin = require('..')
 
 lab.test(
   'validate',
-  PluginValidator(Plugin, module) //(fin)
+  PluginValidator(Plugin, module), //(fin)
 )
 
 lab.test('happy', async () => {

@@ -10,6 +10,11 @@ module.exports = promisify
 module.exports.preload = function preload_promisify(plugin) {
   var self = this
 
+  // Promisify builtin to Seneca >= 4
+  if (!self.version.startsWith('3.')) {
+    return
+  }
+
   var options = plugin.options
 
   var actives = {
